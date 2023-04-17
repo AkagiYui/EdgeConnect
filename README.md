@@ -4,7 +4,7 @@ EdgeConnect Backend
 
 ## 技术栈
 
-- SpringBoot 3
+- SpringBoot
 - Spring Security
 - MyBatis
 - MySQL

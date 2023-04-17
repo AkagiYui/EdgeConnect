@@ -12,6 +12,7 @@ import java.util.List;
  */
 
 public interface UserService extends IService<User>, UserDetailsService {
+
     List<User> getAllUser();
     @Override
     UserDetails loadUserByUsername(String username);
