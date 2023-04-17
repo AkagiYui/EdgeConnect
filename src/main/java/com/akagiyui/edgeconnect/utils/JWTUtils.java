@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.lang.Pair;
 import cn.hutool.jwt.JWT;
+import com.akagiyui.edgeconnect.entity.LoginUserDetails;
 import com.akagiyui.edgeconnect.entity.User;
 import com.akagiyui.edgeconnect.service.UserService;
 import jakarta.annotation.PostConstruct;
@@ -31,9 +32,17 @@ public class JWTUtils {
      * @return 密钥
      */
     public static String createJWT(User user) {
+        return createJWT(user.getId());
+    }
+
+    public static String createJWT(LoginUserDetails user) {
+        return createJWT(user.getUser());
+    }
+
+    public static String createJWT(Long userId) {
         DateTime currentTime = DateTime.now();
         return JWT.create()
-                .setPayload("id", user.getId())
+                .setPayload("id", userId)
                 .setKey(key)
                 .setIssuedAt(currentTime)
                 .setNotBefore(currentTime)
