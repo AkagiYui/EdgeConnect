@@ -26,7 +26,6 @@ public class CustomExceptionHandler {
 
     /**
      * 404异常处理
-     * @param e 异常
      * @return 返回相应
      */
     @ExceptionHandler(value = NoHandlerFoundException.class)
