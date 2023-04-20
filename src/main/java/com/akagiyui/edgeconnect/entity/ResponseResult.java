@@ -1,5 +1,6 @@
 package com.akagiyui.edgeconnect.entity;
 
+import com.akagiyui.edgeconnect.utils.ResponseEnum;
 import lombok.Data;
 
 /**
@@ -20,14 +21,22 @@ public class ResponseResult<T> {
         return result;
     }
 
-    public static <T> ResponseResult<T> success() {
+    public static ResponseResult<Object> success() {
         return success(null);
     }
 
-    public static <T> ResponseResult<T> error(Integer code, String msg) {
-        ResponseResult<T> result = new ResponseResult<>();
+    public static ResponseResult<Object> error(Integer code, String msg) {
+        ResponseResult<Object> result = new ResponseResult<>();
         result.setCode(code);
         result.setMsg(msg);
         return result;
+    }
+
+    public static ResponseResult<Object> internalError() {
+        return responseEnum(ResponseEnum.INTERNAL_ERROR);
+    }
+
+    public static ResponseResult<Object> responseEnum(ResponseEnum status) {
+        return error(status.getCode(), status.getMsg());
     }
 }

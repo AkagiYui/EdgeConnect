@@ -1,33 +1,29 @@
 package com.akagiyui.edgeconnect.controller;
 
-import com.akagiyui.edgeconnect.entity.User;
 import com.akagiyui.edgeconnect.entity.request.LoginRequest;
 import com.akagiyui.edgeconnect.service.LoginService;
-import com.akagiyui.edgeconnect.service.UserService;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * 用户控制器
  * @author AkagiYui
  */
-
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
     @Resource
-    UserService userService;
-
-    @Resource
     LoginService loginService;
 
-    @GetMapping("")
-    public List<User> getUserInfo() {
-        return userService.getAllUser();
-    }
-
+    /**
+     * 登录
+     * @param user 用户
+     * @return 返回token
+     */
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest user) {
         return loginService.login(user);

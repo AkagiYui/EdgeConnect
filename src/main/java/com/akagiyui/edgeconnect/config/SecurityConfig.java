@@ -12,23 +12,39 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
+ * Spring Security 配置
  * @author AkagiYui
  */
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    /**
+     * 密码加密器
+     * @return 密码加密器
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * 认证管理器
+     * @param config 认证配置
+     * @return 认证管理器
+     * @throws Exception 异常
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
+    /**
+     * Spring Security 配置
+     * @param http HttpSecurity
+     * @return SecurityFilterChain
+     * @throws Exception 异常
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -46,11 +62,11 @@ public class SecurityConfig {
                 .logout().disable()
                 // 放行 login
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                        .requestMatchers("/**").permitAll()
                         .requestMatchers("/user/login").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();
-
                 // 设置异常的EntryPoint，如果不设置，默认使用Http403ForbiddenEntryPoint
 //                .exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(invalidAuthenticationEntryPoint))
 //                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
