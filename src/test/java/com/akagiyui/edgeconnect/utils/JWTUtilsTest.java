@@ -1,38 +1,43 @@
 package com.akagiyui.edgeconnect.utils;
 
 import com.akagiyui.edgeconnect.entity.User;
+import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
+ * JWT 工具类测试
  * @author AkagiYui
  */
-
+@SpringBootTest
 class JWTUtilsTest {
 
-    @Test
-    void createJWT() {
-    }
+    @Resource
+    JWTUtils jwtUtils;
 
+    /**
+     * 测试 JWT 验证
+     */
     @Test
     void verifyJWT() {
         User user = new User();
         user.setId(233L);
-        JWTUtils.verifyJWT(JWTUtils.createJWT(user));
+        assertTrue(jwtUtils.verifyJWT(jwtUtils.createJWT(user)));
     }
 
+    /**
+     * 测试获取用户 ID
+     */
     @Test
     void getUserId() {
-    }
-
-    @Test
-    void getUser() {
         User user = new User();
         user.setId(233L);
-        String jwt = JWTUtils.createJWT(user);
+        String jwt = jwtUtils.createJWT(user);
         System.out.println(jwt);
-        Long userId = JWTUtils.getUserId(jwt);
+        Long userId = jwtUtils.getUserId(jwt);
         System.out.println(userId);
         assertEquals(user.getId(), userId);
     }

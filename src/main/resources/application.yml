@@ -1,6 +1,6 @@
 spring:
   application:
-    name: user-service
+    name: edge-connect
   profiles:
     active: dev
   mvc:
@@ -13,3 +13,6 @@ spring:
     resources:
       # 关闭静态资源映射
       add-mappings: false
+edge:
+  jwt:
+    key: tcVpKhT6zx5XAqDDdjLF23bOd/DDQ1EwSgMuHR/5vig=

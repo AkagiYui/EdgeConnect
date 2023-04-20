@@ -4,39 +4,65 @@ import com.akagiyui.edgeconnect.utils.ResponseEnum;
 import lombok.Data;
 
 /**
+ * 响应包装体
  * @author AkagiYui
  */
-
 @Data
 public class ResponseResult<T> {
+    /**
+     * 状态码
+     */
     private Integer code;
+    /**
+     * 消息
+     */
     private String msg;
+    /**
+     * 数据
+     */
     private T data;
 
-    public static <T> ResponseResult<T> success(T data) {
+    /**
+     * 通用响应
+     * @param code 状态码
+     * @param msg 消息
+     * @param data 数据
+     * @return 响应体
+     * @param <T> 数据类型
+     */
+    public static <T> ResponseResult<T> response(Integer code, String msg, T data) {
         ResponseResult<T> result = new ResponseResult<>();
-        result.setCode(200);
-        result.setMsg("");
+        result.setCode(code);
+        result.setMsg(msg);
         result.setData(data);
         return result;
     }
 
-    public static ResponseResult<Object> success() {
+    /**
+     * 通用响应
+     * @param status 状态枚举
+     * @return 响应体
+     */
+    public static ResponseResult<?> response(ResponseEnum status) {
+        return response(status.getCode(), status.getMsg(), null);
+    }
+
+    /**
+     * 成功响应
+     * @param data 数据
+     * @return 响应体
+     */
+    public static <T> ResponseResult<T> success(T data) {
+        ResponseEnum success = ResponseEnum.SUCCESS;
+        return response(success.getCode(), success.getMsg(), data);
+    }
+
+    /**
+     * 无数据成功响应
+     * @return 响应体
+     */
+    public static ResponseResult<?> success() {
         return success(null);
     }
 
-    public static ResponseResult<Object> error(Integer code, String msg) {
-        ResponseResult<Object> result = new ResponseResult<>();
-        result.setCode(code);
-        result.setMsg(msg);
-        return result;
-    }
-
-    public static ResponseResult<Object> internalError() {
-        return responseEnum(ResponseEnum.INTERNAL_ERROR);
-    }
-
-    public static ResponseResult<Object> responseEnum(ResponseEnum status) {
-        return error(status.getCode(), status.getMsg());
-    }
 }

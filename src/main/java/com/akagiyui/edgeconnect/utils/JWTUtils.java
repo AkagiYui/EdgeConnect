@@ -6,40 +6,50 @@ import cn.hutool.core.lang.Pair;
 import cn.hutool.jwt.JWT;
 import com.akagiyui.edgeconnect.entity.LoginUserDetails;
 import com.akagiyui.edgeconnect.entity.User;
-import com.akagiyui.edgeconnect.service.UserService;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
+ * JWT工具类
  * @author AkagiYui
  */
+@SuppressWarnings("AlibabaLowerCamelCaseVariableNaming")
 @Component
 public class JWTUtils {
-    static byte[] key = "12456789".getBytes();
+    /**
+     * 密钥
+     */
+    @Value("${edge.jwt.key}")
+    private byte[] key;
+    /**
+     * 过期时间
+     */
     static Pair<Integer, DateField> expireTime = Pair.of(2, DateField.HOUR);
 
-    private static JWTUtils jwtUtils;
-
-    @PostConstruct
-    public void init() {
-        jwtUtils = this;
+    /**
+     * 生成密钥
+     * @param user 用户
+     * @return 密钥
+     */
+    public String createJWT(User user) {
+        return createJWT(user.getId());
     }
 
     /**
      * 生成密钥
-     *
+     * @param user 用户
      * @return 密钥
      */
-    public static String createJWT(User user) {
-        return createJWT(user.getId());
-    }
-
-    public static String createJWT(LoginUserDetails user) {
+    public String createJWT(LoginUserDetails user) {
         return createJWT(user.getUser());
     }
 
-    public static String createJWT(Long userId) {
+    /**
+     * 生成密钥
+     * @param userId 用户id
+     * @return 密钥
+     */
+    public String createJWT(Long userId) {
         DateTime currentTime = DateTime.now();
         return JWT.create()
                 .setPayload("id", userId)
@@ -56,7 +66,7 @@ public class JWTUtils {
      * @param token 密钥
      * @return 是否有效
      */
-    public static boolean verifyJWT(String token) {
+    public boolean verifyJWT(String token) {
         return JWT.of(token).setKey(key).verify();
     }
 
@@ -66,19 +76,7 @@ public class JWTUtils {
      * @param token 密钥
      * @return 用户id
      */
-    public static Long getUserId(String token) {
+    public Long getUserId(String token) {
         return  JWT.of(token).setKey(key).getPayloads().getLong("id");
-    }
-
-    @Resource
-    UserService userService;
-
-    /**
-     * 从密钥中获取用户
-     * @param token 密钥
-     * @return 用户
-     */
-    public User getUser(String token) {
-        return userService.getById(getUserId(token));
     }
 }

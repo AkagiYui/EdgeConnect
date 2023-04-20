@@ -20,8 +20,8 @@ public class CustomExceptionHandler {
      * @return 返回相应
      */
     @ExceptionHandler(value = CustomException.class)
-    public ResponseResult<Object> customException(CustomException e) {
-        return ResponseResult.responseEnum(e.getStatus());
+    public ResponseResult<?> customException(CustomException e) {
+        return ResponseResult.response(e.getStatus());
     }
 
     /**
@@ -30,8 +30,8 @@ public class CustomExceptionHandler {
      * @return 返回相应
      */
     @ExceptionHandler(value = NoHandlerFoundException.class)
-    public ResponseResult<Object> unknownException(NoHandlerFoundException ignored) {
-        return ResponseResult.responseEnum(ResponseEnum.NOT_FOUND);
+    public ResponseResult<?> unknownException(NoHandlerFoundException ignored) {
+        return ResponseResult.response(ResponseEnum.NOT_FOUND);
     }
 
     /**
@@ -40,8 +40,8 @@ public class CustomExceptionHandler {
      * @return 返回相应
      */
     @ExceptionHandler(value = Exception.class)
-    public ResponseResult<Object> unknownException(Exception e) {
+    public ResponseResult<?> unknownException(Exception e) {
         e.printStackTrace();
-        return ResponseResult.internalError();
+        return ResponseResult.response(ResponseEnum.INTERNAL_ERROR);
     }
 }
