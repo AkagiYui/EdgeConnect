@@ -1,3 +1,5 @@
+server:
+  shutdown: immediate
 mybatis-plus:
   configuration:
     # 调试 sql 日志输出

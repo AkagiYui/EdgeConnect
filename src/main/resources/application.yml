@@ -2,6 +2,7 @@ spring:
   application:
     name: edge-connect
   profiles:
+    # 激活 dev 配置
     active: dev
   mvc:
     # 抛出 404 异常
@@ -13,6 +14,12 @@ spring:
     resources:
       # 关闭静态资源映射
       add-mappings: false
+  lifecycle:
+    # 等待请求结束超时时长
+    timeout-per-shutdown-phase: 30s
+server:
+  # 等待请求结束后再关闭
+  shutdown: graceful
 edge:
   jwt:
     key: tcVpKhT6zx5XAqDDdjLF23bOd/DDQ1EwSgMuHR/5vig=
