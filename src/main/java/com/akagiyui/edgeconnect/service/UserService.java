@@ -1,6 +1,7 @@
 package com.akagiyui.edgeconnect.service;
 
 import com.akagiyui.edgeconnect.entity.User;
+import com.akagiyui.edgeconnect.entity.request.RegisterRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +18,13 @@ public interface UserService extends IService<User>, UserDetailsService {
      * @return 用户列表
      */
     List<User> getAllUser();
+
+    /**
+     * 添加用户
+     * @param registerRequest 注册请求体
+     * @return 是否成功
+     */
+    Boolean addUser(RegisterRequest registerRequest);
 
     /**
      * 根据用户名获取用户

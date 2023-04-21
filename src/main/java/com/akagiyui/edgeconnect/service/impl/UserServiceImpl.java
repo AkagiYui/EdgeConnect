@@ -2,6 +2,7 @@ package com.akagiyui.edgeconnect.service.impl;
 
 import com.akagiyui.edgeconnect.entity.LoginUserDetails;
 import com.akagiyui.edgeconnect.entity.User;
+import com.akagiyui.edgeconnect.entity.request.RegisterRequest;
 import com.akagiyui.edgeconnect.mapper.UserMapper;
 import com.akagiyui.edgeconnect.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -29,6 +30,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public List<User> getAllUser() {
         return userMapper.selectList(null);
+    }
+
+    /**
+     * 添加用户
+     * @param registerRequest 注册请求体
+     * @return 是否成功
+     */
+    @Override
+    public Boolean addUser(RegisterRequest registerRequest) {
+        User user = new User();
+        user.setUsername(registerRequest.getUsername());
+        user.setPassword(registerRequest.getPassword());
+        user.setEmail(registerRequest.getEmail());
+        user.setNickname(registerRequest.getNickname() == null ? registerRequest.getUsername() : registerRequest.getNickname());
+        return userMapper.insert(user) > 0;
     }
 
     /**
