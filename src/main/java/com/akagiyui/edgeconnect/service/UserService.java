@@ -47,4 +47,11 @@ public interface UserService extends IService<User>, UserDetailsService {
      */
     @Override
     UserDetails loadUserByUsername(String username);
+
+    /**
+     * 注册
+     * @param registerRequest 注册请求体
+     * @return 是否成功
+     */
+    boolean register(RegisterRequest registerRequest);
 }

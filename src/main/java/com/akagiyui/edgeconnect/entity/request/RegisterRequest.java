@@ -1,8 +1,9 @@
 package com.akagiyui.edgeconnect.entity.request;
 
 import lombok.Data;
-
 import org.jetbrains.annotations.Nullable;
+
+import javax.validation.constraints.Email;
 
 /**
  * 注册请求体
@@ -21,6 +22,7 @@ public class RegisterRequest {
     /**
      * 邮箱
      */
+    @Email
     private String email;
     /**
      * 昵称

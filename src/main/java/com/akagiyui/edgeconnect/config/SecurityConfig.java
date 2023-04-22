@@ -2,8 +2,11 @@ package com.akagiyui.edgeconnect.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.authentication.configuration.GlobalAuthenticationConfigurerAdapter;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,7 +20,8 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SecurityConfig extends GlobalAuthenticationConfigurerAdapter {
 
     /**
      * 密码加密器
@@ -60,26 +64,26 @@ public class SecurityConfig {
                 .formLogin().disable()
                 // 禁用默认登出页
                 .logout().disable()
-                // 放行 login
-                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers("/**").permitAll()
-                        .requestMatchers("/user/login").permitAll()
+
+                .exceptionHandling(exceptions -> {
+                    // 使用匿名内部类
+                    exceptions.authenticationEntryPoint((request, response, authException) -> {
+                        // 未认证，返回401
+                        //noinspection BlockingMethodInNonBlockingContext
+                        response.sendError(401);
+                    });
+                })
+
+                // 路由权限配置
+                .authorizeRequests(authorizeHttpRequests -> authorizeHttpRequests
+                        // 允许所有OPTIONS请求
+                        .antMatchers(HttpMethod.OPTIONS).permitAll()
+                        // 放行登录接口
+//                        .requestMatchers("/user/login").permitAll()
+                        // 其他所有接口必须接受认证
                         .anyRequest().authenticated()
                 );
         return http.build();
-                // 设置异常的EntryPoint，如果不设置，默认使用Http403ForbiddenEntryPoint
-//                .exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(invalidAuthenticationEntryPoint))
-//                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-//                        // 允许所有OPTIONS请求
-//                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-//                        // 允许直接访问授权登录接口
-//                        .requestMatchers(HttpMethod.POST, "/web/authenticate").permitAll()
-//                        // 允许 SpringMVC 的默认错误地址匿名访问
-//                        .requestMatchers("/error").permitAll()
-//                        // 其他所有接口必须有Authority信息，Authority在登录成功后的UserDetailsImpl对象中默认设置“ROLE_USER”
-//                        //.requestMatchers("/**").hasAnyAuthority("ROLE_USER")
-//                        // 允许任意请求被已登录用户访问，不检查Authority
-//                        .anyRequest().authenticated())
 //                .authenticationProvider(authenticationProvider())
 //                // 加我们自定义的过滤器，替代UsernamePasswordAuthenticationFilter
 //                .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

@@ -5,11 +5,12 @@ import com.akagiyui.edgeconnect.entity.request.LoginRequest;
 import com.akagiyui.edgeconnect.exception.CustomException;
 import com.akagiyui.edgeconnect.service.LoginService;
 import com.akagiyui.edgeconnect.utils.JWTUtils;
-import jakarta.annotation.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 import static com.akagiyui.edgeconnect.utils.ResponseEnum.UNAUTHORIZED;
 

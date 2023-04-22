@@ -3,16 +3,19 @@ package com.akagiyui.edgeconnect.service.impl;
 import com.akagiyui.edgeconnect.entity.LoginUserDetails;
 import com.akagiyui.edgeconnect.entity.User;
 import com.akagiyui.edgeconnect.entity.request.RegisterRequest;
+import com.akagiyui.edgeconnect.exception.CustomException;
 import com.akagiyui.edgeconnect.mapper.UserMapper;
 import com.akagiyui.edgeconnect.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Preconditions;
-import jakarta.annotation.Resource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
+
+import static com.akagiyui.edgeconnect.utils.ResponseEnum.USER_EXIST;
 
 /**
  * 用户表 服务实现类
@@ -77,7 +80,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public UserDetails loadUserByUsername(String username) {
         User user = getUser(username);
-        Preconditions.checkNotNull(user, "用户不存在");
+        Preconditions.checkNotNull(user, "User not found");
         return new LoginUserDetails(user);
+    }
+
+    /**
+     * 注册
+     * @param registerRequest 注册请求体
+     * @return 是否成功
+     */
+    @Override
+    public boolean register(RegisterRequest registerRequest) {
+        if (isUserExist(registerRequest.getUsername())) {
+            throw new CustomException(USER_EXIST);
+        }
+        return addUser(registerRequest);
     }
 }

@@ -48,6 +48,15 @@ public class ResponseResult<T> {
     }
 
     /**
+     * 通用响应
+     * @param status 状态枚举
+     * @return 响应体
+     */
+    public static <T> ResponseResult<T> response(ResponseEnum status, T data) {
+        return response(status.getCode(), status.getMsg(), data);
+    }
+
+    /**
      * 成功响应
      * @param data 数据
      * @return 响应体

@@ -29,7 +29,15 @@ public enum ResponseEnum {
     /**
      * 未授权
      */
-    UNAUTHORIZED(10004, "Unauthorized");
+    UNAUTHORIZED(10004, "Unauthorized"),
+    /**
+     * 用户已存在
+     */
+    USER_EXIST(10005, "User exist"),
+    /**
+     * 参数错误
+     */
+    BAD_REQUEST(10006, "Bad request");
 
     /**
      * 状态码
