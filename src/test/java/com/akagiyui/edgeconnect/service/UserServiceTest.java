@@ -45,4 +45,9 @@ class UserServiceTest {
         List<User> users = userService.getAllUser();
         users.forEach(System.out::println);
     }
+
+    @Test
+    void isUserExist() {
+        assertTrue(userService.isUserExist("testUser"));
+    }
 }

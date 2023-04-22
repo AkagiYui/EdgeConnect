@@ -4,3 +4,7 @@ mybatis-plus:
   configuration:
     # 调试 sql 日志输出
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+spring:
+  config:
+    # 导入 .env.yml 配置
+    import: optional:file:.env.yml

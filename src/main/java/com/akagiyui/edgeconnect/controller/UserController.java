@@ -1,6 +1,7 @@
 package com.akagiyui.edgeconnect.controller;
 
 import com.akagiyui.edgeconnect.entity.request.LoginRequest;
+import com.akagiyui.edgeconnect.entity.response.LoginResponse;
 import com.akagiyui.edgeconnect.service.LoginService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,8 @@ public class UserController {
      * @return 返回token
      */
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest user) {
-        return loginService.login(user);
+    public LoginResponse login(@RequestBody LoginRequest user) {
+        return new LoginResponse(loginService.login(user), null);
     }
+
 }

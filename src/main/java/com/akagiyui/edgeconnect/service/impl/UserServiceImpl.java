@@ -60,6 +60,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
+     * 用户是否存在
+     * @param username 用户名
+     * @return 是否存在
+     */
+    @Override
+    public Boolean isUserExist(String username) {
+        return getUser(username) != null;
+    }
+
+    /**
      * 根据用户名获取用户
      * @param username 用户名
      * @return 用户
