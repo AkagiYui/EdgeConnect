@@ -63,6 +63,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
+     * 根据用户 ID 获取用户
+     * @param userId 用户 ID
+     * @return 用户
+     */
+    @Override
+    public User getUser(Long userId) {
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getId, userId);
+        return userMapper.selectOne(wrapper);
+    }
+
+    /**
      * 用户是否存在
      * @param username 用户名
      * @return 是否存在
@@ -70,6 +82,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Boolean isUserExist(String username) {
         return getUser(username) != null;
+    }
+
+    /**
+     * 用户是否存在
+     * @param userId 用户 ID
+     * @return 是否存在
+     */
+    @Override
+    public Boolean isUserExist(Long userId) {
+        return getUser(userId) != null;
     }
 
     /**

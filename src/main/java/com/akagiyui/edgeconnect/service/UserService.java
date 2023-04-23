@@ -34,11 +34,25 @@ public interface UserService extends IService<User>, UserDetailsService {
     User getUser(String username);
 
     /**
+     * 获取用户
+     * @param userId 用户 ID
+     * @return 用户
+     */
+    User getUser(Long userId);
+
+    /**
      * 用户是否存在
      * @param username 用户名
      * @return 是否存在
      */
     Boolean isUserExist(String username);
+
+    /**
+     * 用户是否存在
+     * @param userId 用户 ID
+     * @return 是否存在
+     */
+    Boolean isUserExist(Long userId);
 
     /**
      * 根据用户名获取用户

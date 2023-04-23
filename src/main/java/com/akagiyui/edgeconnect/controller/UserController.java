@@ -5,10 +5,8 @@ import com.akagiyui.edgeconnect.entity.request.RegisterRequest;
 import com.akagiyui.edgeconnect.entity.response.LoginResponse;
 import com.akagiyui.edgeconnect.service.LoginService;
 import com.akagiyui.edgeconnect.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -42,8 +40,18 @@ public class UserController {
      * @param registerRequest 注册请求体
      * @return 是否成功
      */
+    @PreAuthorize("permitAll()")
     @PostMapping("/register")
     public boolean register(@RequestBody @Valid RegisterRequest registerRequest) {
         return userService.register(registerRequest);
+    }
+
+    /**
+     * 获取自身信息
+     * @return 自身信息
+     */
+    @GetMapping("")
+    public String getSelfInfo() {
+        return "getSelfInfo";
     }
 }

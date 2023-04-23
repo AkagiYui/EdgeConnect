@@ -1,5 +1,6 @@
 package com.akagiyui.edgeconnect.config;
 
+import com.akagiyui.edgeconnect.filter.JWTAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,6 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.annotation.Resource;
 
 /**
  * Spring Security 配置
@@ -18,6 +22,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Resource
+    JWTAuthenticationFilter jwtAuthenticationFilter;
 
     /**
      * 密码加密器
@@ -35,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Bean
     @Override
-    public AuthenticationManager authenticationManager() throws Exception {
+    public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
@@ -75,9 +82,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     // 允许所有OPTIONS请求
                     .antMatchers(HttpMethod.OPTIONS).permitAll()
                     // 放行登录接口
-                    .antMatchers(HttpMethod.POST, "/user/login").permitAll()
+                    .antMatchers(HttpMethod.POST, "/user/login").anonymous()
                     // 其他所有接口必须接受认证
                     .anyRequest().fullyAuthenticated();
+
+        // 添加JWT过滤器
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         // 允许跨域
         http.cors();
