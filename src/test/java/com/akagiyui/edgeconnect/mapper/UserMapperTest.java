@@ -1,9 +1,10 @@
 package com.akagiyui.edgeconnect.mapper;
 
-import jakarta.annotation.Resource;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import javax.annotation.Resource;
 
 /**
  * 用户表 Mapper 接口测试

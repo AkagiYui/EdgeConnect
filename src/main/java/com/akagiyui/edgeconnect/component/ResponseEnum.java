@@ -1,4 +1,4 @@
-package com.akagiyui.edgeconnect.utils;
+package com.akagiyui.edgeconnect.component;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

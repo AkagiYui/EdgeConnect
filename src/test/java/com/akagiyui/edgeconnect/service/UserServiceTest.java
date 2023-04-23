@@ -2,11 +2,11 @@ package com.akagiyui.edgeconnect.service;
 
 import com.akagiyui.edgeconnect.entity.User;
 import com.akagiyui.edgeconnect.entity.request.RegisterRequest;
-import jakarta.annotation.Resource;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;

@@ -1,6 +1,6 @@
 package com.akagiyui.edgeconnect.exception;
 
-import com.akagiyui.edgeconnect.utils.ResponseEnum;
+import com.akagiyui.edgeconnect.component.ResponseEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

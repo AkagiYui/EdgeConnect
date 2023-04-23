@@ -8,3 +8,10 @@ spring:
   config:
     # 导入 .env.yml 配置
     import: optional:file:.env.yml
+logging:
+  level:
+    io:
+      # 激活 io.lettuce.core: debug
+      lettuce:
+        core: debug
+    org.springframework.data.redis: debug

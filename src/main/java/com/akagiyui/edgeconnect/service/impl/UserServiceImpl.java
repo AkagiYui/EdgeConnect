@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 
-import static com.akagiyui.edgeconnect.utils.ResponseEnum.USER_EXIST;
+import static com.akagiyui.edgeconnect.component.ResponseEnum.USER_EXIST;
 
 /**
  * 用户表 服务实现类

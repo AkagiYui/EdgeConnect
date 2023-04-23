@@ -1,6 +1,6 @@
 package com.akagiyui.edgeconnect.entity;
 
-import com.akagiyui.edgeconnect.utils.ResponseEnum;
+import com.akagiyui.edgeconnect.component.ResponseEnum;
 import lombok.Data;
 
 /**

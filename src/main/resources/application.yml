@@ -17,6 +17,9 @@ spring:
   lifecycle:
     # 等待请求结束超时时长
     timeout-per-shutdown-phase: 30s
+  redis:
+    host: localhost
+    port: 6379
 server:
   # 等待请求结束后再关闭
   shutdown: graceful

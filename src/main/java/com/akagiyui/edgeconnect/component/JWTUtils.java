@@ -1,4 +1,4 @@
-package com.akagiyui.edgeconnect.utils;
+package com.akagiyui.edgeconnect.component;
 
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
