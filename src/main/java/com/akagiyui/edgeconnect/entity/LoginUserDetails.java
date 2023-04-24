@@ -5,10 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 登录用户详情
@@ -19,15 +23,33 @@ import java.util.Collection;
 @NoArgsConstructor
 public class LoginUserDetails implements UserDetails, Serializable {
     User user;
+    List<String> permissions;
+    @JsonIgnore
+    List<GrantedAuthority> authorities;
+
+    /**
+     * 登录用户详情
+     * @param user 用户
+     * @param permissions 用户权限
+     */
+    public LoginUserDetails(User user, List<String> permissions) {
+        this.user = user;
+        this.permissions = permissions;
+    }
 
     /**
      * 获取用户权限
      * @return 用户权限集合
      */
     @Override
-    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        // 转换为 GrantedAuthority 集合
+        return Objects.requireNonNullElseGet(authorities, () -> {
+            authorities = permissions.stream()
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(Collectors.toList());
+            return authorities;
+        });
     }
 
     /**

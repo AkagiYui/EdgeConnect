@@ -1,12 +1,13 @@
 package com.akagiyui.edgeconnect.controller;
 
 import com.akagiyui.edgeconnect.entity.LoginUserDetails;
-import com.akagiyui.edgeconnect.entity.User;
 import com.akagiyui.edgeconnect.entity.request.LoginRequest;
 import com.akagiyui.edgeconnect.entity.request.RegisterRequest;
 import com.akagiyui.edgeconnect.entity.response.LoginResponse;
+import com.akagiyui.edgeconnect.entity.response.UserInfoResponse;
 import com.akagiyui.edgeconnect.service.LoginService;
 import com.akagiyui.edgeconnect.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -56,10 +57,24 @@ public class UserController {
      */
     @GetMapping("")
     @PreAuthorize("isAuthenticated()")
-    public User getSelfInfo() {
+    public UserInfoResponse getSelfInfo() {
         // 从 SecurityContextHolder 中获取用户信息
         UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         LoginUserDetails userDetails = (LoginUserDetails) authentication.getPrincipal();
-        return userDetails.getUser();
+        UserInfoResponse userInfoResponse = new UserInfoResponse();
+        BeanUtils.copyProperties(userDetails.getUser(), userInfoResponse);
+        return userInfoResponse;
+    }
+
+    @GetMapping("/test")
+    @PreAuthorize("hasAuthority('user:test')")
+    public String test() {
+        return "test";
+    }
+
+    @GetMapping("/testno")
+    @PreAuthorize("hasAuthority('user:no')")
+    public String test233() {
+        return "testno";
     }
 }

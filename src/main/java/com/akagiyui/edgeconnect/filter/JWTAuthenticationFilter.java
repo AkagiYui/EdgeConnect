@@ -47,10 +47,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                     // 从 redis 中获取用户信息
                     String redisKey = "user:" + userId;
                     LoginUserDetails userDetails = redisCache.get(redisKey);
-                    // 在 redis 中没有找到用户信息 TODO: 从数据库中获取用户信息
+                    // 在 redis 中没有找到用户信息 TODO 从数据库中获取用户信息
                     if (userDetails != null) {
                         // 放入 Spring Security 上下文
-                        // TODO 获取用户权限信息
                         UsernamePasswordAuthenticationToken authenticationToken =
                                 new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                         SecurityContextHolder.getContext().setAuthentication(authenticationToken);

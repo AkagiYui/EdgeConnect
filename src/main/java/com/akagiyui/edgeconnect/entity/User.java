@@ -32,12 +32,10 @@ public class User extends BaseEntity {
      * 是否禁用
      */
     @TableField(fill = FieldFill.INSERT)
-    @JsonIgnore
     private Boolean isDisabled;
     /**
      * 是否被删除
      */
     @TableField(fill = FieldFill.INSERT)
-    @JsonIgnore
     private Boolean isDeleted;
 }

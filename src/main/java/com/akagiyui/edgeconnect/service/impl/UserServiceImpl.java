@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.akagiyui.edgeconnect.component.ResponseEnum.USER_EXIST;
@@ -103,7 +105,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public UserDetails loadUserByUsername(String username) {
         User user = getUser(username);
         Preconditions.checkNotNull(user, "User not found");
-        return new LoginUserDetails(user);
+        // 查询用户权限
+        List<String> permissions = new ArrayList<>(Arrays.asList("user:test", "user:read"));
+        return new LoginUserDetails(user, permissions);
     }
 
     /**
