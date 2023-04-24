@@ -2,6 +2,7 @@ package com.akagiyui.edgeconnect.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 /**
@@ -17,6 +18,7 @@ public class User extends BaseEntity {
     /**
      * 密码
      */
+    @JsonIgnore
     private String password;
     /**
      * 昵称
@@ -30,10 +32,12 @@ public class User extends BaseEntity {
      * 是否禁用
      */
     @TableField(fill = FieldFill.INSERT)
+    @JsonIgnore
     private Boolean isDisabled;
     /**
      * 是否被删除
      */
     @TableField(fill = FieldFill.INSERT)
+    @JsonIgnore
     private Boolean isDeleted;
 }
