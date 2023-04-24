@@ -27,7 +27,7 @@ public enum ResponseEnum {
      */
     NOT_FOUND(10003, "Not found"),
     /**
-     * 未授权
+     * 未认证
      */
     UNAUTHORIZED(10004, "Unauthorized"),
     /**
@@ -37,7 +37,11 @@ public enum ResponseEnum {
     /**
      * 参数错误
      */
-    BAD_REQUEST(10006, "Bad request");
+    BAD_REQUEST(10006, "Bad request"),
+    /**
+     * 未授权
+     */
+    FORBIDDEN(10007, "Forbidden");
 
     /**
      * 状态码

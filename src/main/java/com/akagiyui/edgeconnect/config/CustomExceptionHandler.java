@@ -3,6 +3,7 @@ package com.akagiyui.edgeconnect.config;
 import com.akagiyui.edgeconnect.entity.ResponseResult;
 import com.akagiyui.edgeconnect.exception.CustomException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.validation.FieldError;
@@ -31,6 +32,25 @@ public class CustomExceptionHandler {
         return ResponseResult.response(NOT_FOUND);
     }
 
+    /**
+     * 401 认证异常处理
+     * @return 返回相应
+     */
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(value = InternalAuthenticationServiceException.class)
+    public ResponseResult<?> unknownException(InternalAuthenticationServiceException e) {
+        return ResponseResult.response(UNAUTHORIZED, e.getMessage());
+    }
+
+    /**
+     * 403 授权异常处理
+     * @return 返回相应
+     */
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public ResponseResult<?> unknownException(AccessDeniedException e) {
+        return ResponseResult.response(FORBIDDEN, e.getMessage());
+    }
 
     /**
      * 全局异常处理
@@ -44,8 +64,8 @@ public class CustomExceptionHandler {
             return ResponseResult.response(ce.getStatus());
         }
         // 认证异常处理
-        if (e instanceof BadCredentialsException || e instanceof InternalAuthenticationServiceException) {
-            return ResponseResult.response(UNAUTHORIZED);
+        if (e instanceof BadCredentialsException) {
+            return ResponseResult.response(FORBIDDEN);
         }
         // 参数校验异常处理
         if (e instanceof MethodArgumentNotValidException ae) {

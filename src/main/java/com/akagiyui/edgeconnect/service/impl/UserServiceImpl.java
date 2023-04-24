@@ -8,7 +8,6 @@ import com.akagiyui.edgeconnect.mapper.UserMapper;
 import com.akagiyui.edgeconnect.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.google.common.base.Preconditions;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -104,7 +103,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public UserDetails loadUserByUsername(String username) {
         User user = getUser(username);
-        Preconditions.checkNotNull(user, "User not found");
+//        Preconditions.checkNotNull(user, "User not found");
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
         // 查询用户权限
         List<String> permissions = new ArrayList<>(Arrays.asList("user:test", "user:read"));
         return new LoginUserDetails(user, permissions);

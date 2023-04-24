@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
@@ -25,6 +27,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
     JWTAuthenticationFilter jwtAuthenticationFilter;
+
+    @Resource
+    AccessDeniedHandler accessDeniedHandler;
+
+    @Resource
+    AuthenticationEntryPoint authenticationEntryPoint;
 
     /**
      * 密码加密器
@@ -53,46 +61,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                // 禁用basic明文验证
-                .httpBasic().disable()
-
-                // 前后端分离架构不需要csrf保护
-                .csrf().disable()
-
-                // 前后端分离是无状态的，不需要session了，直接禁用。
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-
-                // 禁用默认登录页
-                .formLogin().disable()
-                // 禁用默认登出页
-                .logout().disable()
-
-                .exceptionHandling(exceptions -> {
-                    // 使用匿名内部类
-                    exceptions.authenticationEntryPoint((request, response, authException) -> {
-                        // 未认证，返回401
-                        response.sendError(401);
-                    });
-                })
-
-                // 路由权限配置
-                .authorizeRequests()
-                    // 允许所有OPTIONS请求
-                    .antMatchers(HttpMethod.OPTIONS).permitAll()
-                    // 放行登录接口
-                    .antMatchers(HttpMethod.POST, "/user/login").anonymous()
-                    // 其他所有接口必须接受认证
-                    .anyRequest().fullyAuthenticated();
+        // 禁用basic明文验证
+        http.httpBasic().disable();
+        // 前后端分离架构不需要csrf保护
+        http.csrf().disable();
+        // 前后端分离是无状态的，不需要session了，直接禁用。
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        // 禁用默认登录页
+        http.formLogin().disable();
+        // 禁用默认登出页
+        http.logout().disable();
+        // 允许跨域
+        http.cors();
+        // 路由权限配置
+        http.authorizeRequests()
+            // 允许所有OPTIONS请求
+            .antMatchers(HttpMethod.OPTIONS).permitAll()
+            // 放行登录接口
+            .antMatchers(HttpMethod.POST, "/user/login").anonymous()
+            // 其他所有接口必须接受认证
+            .anyRequest().fullyAuthenticated();
+        // 添加自定义异常处理，使用匿名内部类
+        http.exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler);
 
         // 添加JWT过滤器
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
-        // 允许跨域
-        http.cors();
-//                .authenticationProvider(authenticationProvider())
-//                // 加我们自定义的过滤器，替代UsernamePasswordAuthenticationFilter
-//                .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
