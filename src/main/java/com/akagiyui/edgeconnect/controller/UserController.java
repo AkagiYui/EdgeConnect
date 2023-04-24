@@ -1,6 +1,5 @@
 package com.akagiyui.edgeconnect.controller;
 
-import com.akagiyui.edgeconnect.entity.LoginUserDetails;
 import com.akagiyui.edgeconnect.entity.request.LoginRequest;
 import com.akagiyui.edgeconnect.entity.request.RegisterRequest;
 import com.akagiyui.edgeconnect.entity.response.LoginResponse;
@@ -9,8 +8,6 @@ import com.akagiyui.edgeconnect.service.LoginService;
 import com.akagiyui.edgeconnect.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -58,11 +55,8 @@ public class UserController {
     @GetMapping("")
     @PreAuthorize("isAuthenticated()")
     public UserInfoResponse getSelfInfo() {
-        // 从 SecurityContextHolder 中获取用户信息
-        UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        LoginUserDetails userDetails = (LoginUserDetails) authentication.getPrincipal();
         UserInfoResponse userInfoResponse = new UserInfoResponse();
-        BeanUtils.copyProperties(userDetails.getUser(), userInfoResponse);
+        BeanUtils.copyProperties(userService.getUser(), userInfoResponse);
         return userInfoResponse;
     }
 

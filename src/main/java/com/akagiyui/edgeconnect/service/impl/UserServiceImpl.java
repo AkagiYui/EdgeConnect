@@ -8,6 +8,8 @@ import com.akagiyui.edgeconnect.mapper.UserMapper;
 import com.akagiyui.edgeconnect.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -73,6 +75,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getId, userId);
         return userMapper.selectOne(wrapper);
+    }
+
+    /**
+     * 获取当前用户
+     * @return 用户
+     */
+    @Override
+    public User getUser() {
+        // 从 SecurityContextHolder 中获取用户信息
+        UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        LoginUserDetails userDetails = (LoginUserDetails) authentication.getPrincipal();
+        return userDetails.getUser();
     }
 
     /**

@@ -41,6 +41,12 @@ public interface UserService extends IService<User>, UserDetailsService {
     User getUser(Long userId);
 
     /**
+     * 获取当前用户
+     * @return 用户
+     */
+    User getUser();
+
+    /**
      * 用户是否存在
      * @param username 用户名
      * @return 是否存在
