@@ -41,7 +41,11 @@ public enum ResponseEnum {
     /**
      * 未授权
      */
-    FORBIDDEN(10007, "Forbidden");
+    FORBIDDEN(10007, "Forbidden"),
+    /**
+     * 邮箱已被使用
+     */
+    EMAIL_EXIST(10008, "Email exist");
 
     /**
      * 状态码

@@ -10,6 +10,17 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/edge_connect?user=root&password=root
+  mail:
+    host: smtp.mail_server.com
+    port: 465
+    username: mail_user
+    password: mail_password
+    default-encoding: utf-8
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
   web:
     resources:
       # 关闭静态资源映射
@@ -20,9 +31,18 @@ spring:
   redis:
     host: localhost
     port: 6379
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .ftl
+    servlet:
+      content-type: text/html
 server:
   # 等待请求结束后再关闭
   shutdown: graceful
 edge:
   jwt:
     key: tcVpKhT6zx5XAqDDdjLF23bOd/DDQ1EwSgMuHR/5vig=
+  email:
+    from: connect@edge.net
+    verify:
+      timeout: 10

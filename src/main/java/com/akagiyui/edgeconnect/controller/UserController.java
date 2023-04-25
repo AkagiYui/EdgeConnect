@@ -1,5 +1,6 @@
 package com.akagiyui.edgeconnect.controller;
 
+import com.akagiyui.edgeconnect.entity.request.EmailVerifyCodeRequest;
 import com.akagiyui.edgeconnect.entity.request.LoginRequest;
 import com.akagiyui.edgeconnect.entity.request.RegisterRequest;
 import com.akagiyui.edgeconnect.entity.response.LoginResponse;
@@ -46,6 +47,12 @@ public class UserController {
     @PostMapping("/register")
     public boolean register(@RequestBody @Valid RegisterRequest registerRequest) {
         return userService.register(registerRequest);
+    }
+
+    @PreAuthorize("permitAll()")
+    @PostMapping("/register/code")
+    public boolean getVerifyCode(@RequestBody @Valid EmailVerifyCodeRequest verifyRequest) {
+        return userService.preRegister(verifyRequest);
     }
 
     /**

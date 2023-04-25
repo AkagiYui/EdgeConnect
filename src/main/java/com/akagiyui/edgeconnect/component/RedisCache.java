@@ -223,4 +223,14 @@ public class RedisCache {
     {
         return keys("*");
     }
+
+    /**
+     * 键名是否存在
+     * @param key 键名
+     * @return true=存在；false=不存在
+     */
+    public Boolean hasKey(final String key)
+    {
+        return redisTemplate.hasKey(key);
+    }
 }

@@ -1,6 +1,7 @@
 package com.akagiyui.edgeconnect.service;
 
 import com.akagiyui.edgeconnect.entity.User;
+import com.akagiyui.edgeconnect.entity.request.EmailVerifyCodeRequest;
 import com.akagiyui.edgeconnect.entity.request.RegisterRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -74,4 +75,18 @@ public interface UserService extends IService<User>, UserDetailsService {
      * @return 是否成功
      */
     boolean register(RegisterRequest registerRequest);
+
+    /**
+     * 邮箱是否存在
+     * @param email 邮箱
+     * @return 是否存在
+     */
+    boolean isEmailExist(String email);
+
+    /**
+     * 预注册
+     * @param verifyRequest 验证请求体
+     * @return 是否成功
+     */
+    boolean preRegister(EmailVerifyCodeRequest verifyRequest);
 }

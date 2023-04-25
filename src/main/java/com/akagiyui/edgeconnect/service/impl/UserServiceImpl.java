@@ -1,13 +1,18 @@
 package com.akagiyui.edgeconnect.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
+import com.akagiyui.edgeconnect.component.RedisCache;
 import com.akagiyui.edgeconnect.entity.LoginUserDetails;
 import com.akagiyui.edgeconnect.entity.User;
+import com.akagiyui.edgeconnect.entity.request.EmailVerifyCodeRequest;
 import com.akagiyui.edgeconnect.entity.request.RegisterRequest;
 import com.akagiyui.edgeconnect.exception.CustomException;
 import com.akagiyui.edgeconnect.mapper.UserMapper;
+import com.akagiyui.edgeconnect.service.MailService;
 import com.akagiyui.edgeconnect.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +22,9 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import static com.akagiyui.edgeconnect.component.ResponseEnum.EMAIL_EXIST;
 import static com.akagiyui.edgeconnect.component.ResponseEnum.USER_EXIST;
 
 /**
@@ -28,6 +35,9 @@ import static com.akagiyui.edgeconnect.component.ResponseEnum.USER_EXIST;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     @Resource
     UserMapper userMapper;
+
+    @Resource
+    RedisCache redisCache;
 
     /**
      * 获取所有用户
@@ -137,5 +147,42 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new CustomException(USER_EXIST);
         }
         return addUser(registerRequest);
+    }
+
+    /**
+     * 邮箱是否存在
+     * @param email 邮箱
+     * @return 是否存在
+     */
+    @Override
+    public boolean isEmailExist(String email) {
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getEmail, email);
+        return userMapper.selectCount(wrapper) > 0;
+    }
+
+    @Value("${edge.email.verify.timeout}")
+    private long emailVerifyTimeout;
+
+    @Resource
+    MailService mailService;
+
+    @Override
+    public boolean preRegister(EmailVerifyCodeRequest verifyRequest) {
+        // 检查该邮箱是否在 redis 中存在
+        String redisKey = "emailVerifyCode:" + verifyRequest.getEmail();
+        if (redisCache.hasKey(redisKey)) {
+            throw new CustomException(EMAIL_EXIST);
+        }
+        // 检查该邮箱是否已经注册
+        if (isEmailExist(verifyRequest.getEmail())) {
+            throw new CustomException(EMAIL_EXIST);
+        }
+        // 生成验证码
+        String verifyCode = RandomUtil.randomNumbers(6);
+        redisCache.set(redisKey, verifyCode);
+        redisCache.expire(redisKey, emailVerifyTimeout, TimeUnit.MINUTES);
+        mailService.sendEmailVerifyCode(verifyRequest.getEmail(), verifyCode, emailVerifyTimeout);
+        return true;
     }
 }
