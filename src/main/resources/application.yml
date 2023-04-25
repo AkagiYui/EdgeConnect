@@ -1,3 +1,5 @@
+# 该文件为 Edge Connect 的配置文件模板，请不要修改该文件
+# 请将该文件复制一份，并使用环境变量激活对应的配置文件
 spring:
   application:
     name: edge-connect
@@ -42,7 +44,8 @@ server:
 edge:
   jwt:
     key: tcVpKhT6zx5XAqDDdjLF23bOd/DDQ1EwSgMuHR/5vig=
+    timeout: 2
   email:
-    from: connect@edge.net
+    from: "Edge Connect<admin@edge.com>"
     verify:
       timeout: 10

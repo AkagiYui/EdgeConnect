@@ -1,0 +1,27 @@
+# 在生产环境中，你至少需要正确配置以下内容，使系统能够正常运行
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/edge_connect?user=root&password=root
+  mail:
+    host: smtp.mail_server.com
+    port: 465
+    username: mail_user
+    password: mail_password
+    default-encoding: utf-8
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+  redis:
+    host: localhost
+    port: 6379
+edge:
+  jwt:
+    key: tcVpKhT6zx5XAqDDdjLF23bOd/DDQ1EwSgMuHR/5vig=
+    timeout: 2
+  email:
+    from: "Edge Connect<admin@edge.com>"
+    verify:
+      timeout: 10

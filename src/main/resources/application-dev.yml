@@ -1,3 +1,4 @@
+# 该配置文件打开了部分调试日志，用于开发调试
 server:
   shutdown: immediate
 mybatis-plus:

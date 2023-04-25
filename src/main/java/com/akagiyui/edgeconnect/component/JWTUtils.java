@@ -2,7 +2,6 @@ package com.akagiyui.edgeconnect.component;
 
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
-import cn.hutool.core.lang.Pair;
 import cn.hutool.jwt.JWT;
 import com.akagiyui.edgeconnect.entity.LoginUserDetails;
 import com.akagiyui.edgeconnect.entity.User;
@@ -24,7 +23,8 @@ public class JWTUtils {
     /**
      * 过期时间
      */
-    static Pair<Integer, DateField> expireTime = Pair.of(2, DateField.HOUR);
+    @Value("${edge.jwt.timeout}")
+    private int expireTime;
 
     /**
      * 生成密钥
@@ -56,7 +56,7 @@ public class JWTUtils {
                 .setKey(key)
                 .setIssuedAt(currentTime)
                 .setNotBefore(currentTime)
-                .setExpiresAt(DateTime.now().offset(expireTime.getValue(), expireTime.getKey()))
+                .setExpiresAt(DateTime.now().offset(DateField.HOUR, expireTime))
                 .sign();
     }
 

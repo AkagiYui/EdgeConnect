@@ -12,6 +12,7 @@ import com.akagiyui.edgeconnect.service.MailService;
 import com.akagiyui.edgeconnect.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -127,11 +128,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public UserDetails loadUserByUsername(String username) {
         User user = getUser(username);
-//        Preconditions.checkNotNull(user, "User not found");
-        if (user == null) {
-            throw new RuntimeException("User not found");
-        }
-        // 查询用户权限
+        Preconditions.checkNotNull(user, "User not found");
+        // TODO 查询用户权限
         List<String> permissions = new ArrayList<>(Arrays.asList("user:test", "user:read"));
         return new LoginUserDetails(user, permissions);
     }
