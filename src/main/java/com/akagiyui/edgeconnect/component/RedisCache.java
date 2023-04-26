@@ -68,7 +68,7 @@ public class RedisCache {
     /**
      * 获得基本对象
      * @param key 缓存键值
-     * @return 缓存键值对应的数据
+     * @return 若未找到，返回null
      */
     public <T> T get(final String key)
     {
