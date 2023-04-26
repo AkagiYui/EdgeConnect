@@ -23,6 +23,7 @@ public class User extends BaseEntity {
     /**
      * 昵称
      */
+    @TableField(fill = FieldFill.INSERT)
     private String nickname;
     /**
      * 邮箱

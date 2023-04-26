@@ -34,6 +34,10 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
                 // 禁用标记
                 this.setFieldValByName("isDisabled", false, metaObject);
             }
+            // 如果昵称为空，则使用用户名
+            if (user.getNickname() == null) {
+                this.setFieldValByName("nickname", user.getUsername(), metaObject);
+            }
         }
     }
 
