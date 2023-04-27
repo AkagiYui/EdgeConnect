@@ -3,6 +3,7 @@ package com.akagiyui.edgeconnect.config;
 import com.akagiyui.edgeconnect.entity.ResponseResult;
 import com.akagiyui.edgeconnect.exception.CustomException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -50,6 +51,17 @@ public class CustomExceptionHandler {
     @ExceptionHandler(value = AccessDeniedException.class)
     public ResponseResult<?> unknownException(AccessDeniedException e) {
         return ResponseResult.response(FORBIDDEN, e.getMessage());
+    }
+
+    /**
+     * 400 请求体错误异常处理
+     * @return 返回相应
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = HttpMessageNotReadableException.class)
+    public ResponseResult<?> jsonParseException(HttpMessageNotReadableException e) {
+        // 目前可预见的是 JSON 解析错误
+        return ResponseResult.response(BAD_REQUEST, e.getCause().getMessage());
     }
 
     /**
