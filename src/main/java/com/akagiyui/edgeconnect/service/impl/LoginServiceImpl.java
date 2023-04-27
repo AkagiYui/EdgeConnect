@@ -43,7 +43,11 @@ public class LoginServiceImpl implements LoginService {
      */
     @Override
     public String login(LoginRequest request) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getUsername() + request.getPassword()
+                );
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         //如果认证没通过，抛出异常
         if (authenticate == null) {
