@@ -1,8 +1,8 @@
 package com.akagiyui.edgeconnect.controller;
 
-import com.akagiyui.edgeconnect.entity.request.EmailVerifyCodeRequest;
+import com.akagiyui.edgeconnect.entity.request.EmailVerifyCodeRequireRequest;
 import com.akagiyui.edgeconnect.entity.request.LoginRequest;
-import com.akagiyui.edgeconnect.entity.request.RegisterRequest;
+import com.akagiyui.edgeconnect.entity.request.RegisterConfirmRequest;
 import com.akagiyui.edgeconnect.entity.response.LoginResponse;
 import com.akagiyui.edgeconnect.entity.response.UserInfoResponse;
 import com.akagiyui.edgeconnect.service.LoginService;
@@ -40,18 +40,18 @@ public class UserController {
 
     /**
      * 注册
-     * @param registerRequest 注册请求体
+     * @param registerConfirmRequest 注册请求体
      * @return 是否成功
      */
     @PreAuthorize("permitAll()")
     @PostMapping("/register")
-    public boolean register(@RequestBody @Valid RegisterRequest registerRequest) {
-        return userService.register(registerRequest);
+    public boolean register(@RequestBody @Valid RegisterConfirmRequest registerConfirmRequest) {
+        return userService.confirmRegister(registerConfirmRequest);
     }
 
     @PreAuthorize("permitAll()")
     @PostMapping("/register/code")
-    public boolean getVerifyCode(@RequestBody @Valid EmailVerifyCodeRequest verifyRequest) {
+    public boolean getVerifyCode(@RequestBody @Valid EmailVerifyCodeRequireRequest verifyRequest) {
         return userService.preRegister(verifyRequest);
     }
 

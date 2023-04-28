@@ -2,16 +2,23 @@ package com.akagiyui.edgeconnect.entity.request;
 
 import lombok.Data;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * 登录请求体
  * @author AkagiYui
  */
 @Data
-public class LoginRequest {
+public class EmailVerifyCodeRequireRequest {
+    /**
+     * 邮箱
+     */
+    @NotBlank(message = "Email cannot be empty")
+    @NotNull(message = "Email cannot be empty")
+    @Email(message = "Email format is incorrect")
+    private String email;
     /**
      * 用户名
      */
@@ -24,5 +31,11 @@ public class LoginRequest {
      */
     @NotBlank(message = "Password cannot be empty")
     @NotNull(message = "Password cannot be empty")
+    @Size(min = 8, max = 64, message = "Password length must be less than 8")
     private String password;
+    /**
+     * 昵称
+     */
+    @Size(max = 20, message = "Nickname length must be less than 20")
+    private String nickname;
 }

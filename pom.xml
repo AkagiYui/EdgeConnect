@@ -16,6 +16,7 @@
     <description>EdgeConnect</description>
     <properties>
         <java.version>17</java.version>
+        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
     </properties>
     <dependencies>
         <!-- Spring Boot Web -->
@@ -81,7 +82,7 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.5.3.1</version>
+            <version>${mybatis-plus.version}</version>
         </dependency>
 
         <!-- Mysql Driver -->

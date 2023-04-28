@@ -24,4 +24,9 @@ class UserMapperTest {
     void selectList() {
         userMapper.selectList(null).forEach(System.out::println);
     }
+
+    @Test
+    void isEmailExist() {
+        userMapper.isEmailExist("测试");
+    }
 }

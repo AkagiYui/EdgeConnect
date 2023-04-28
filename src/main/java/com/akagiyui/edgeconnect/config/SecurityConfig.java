@@ -69,8 +69,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
             // 允许所有OPTIONS请求
             .antMatchers(HttpMethod.OPTIONS).permitAll()
-            // 放行登录接口
+            // 放行接口
             .antMatchers(HttpMethod.POST, "/user/login").anonymous()
+            .antMatchers(HttpMethod.POST, "/user/register/**").anonymous()
             // 其他所有接口必须接受认证
             .anyRequest().fullyAuthenticated();
 

@@ -1,7 +1,6 @@
 package com.akagiyui.edgeconnect.service;
 
 import com.akagiyui.edgeconnect.entity.User;
-import com.akagiyui.edgeconnect.entity.request.RegisterRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,20 +20,6 @@ class UserServiceTest {
 
     @Resource
     UserService userService;
-
-    /**
-     * 添加用户
-     */
-    @Test
-    @DisplayName("添加用户")
-    void addUser() {
-        RegisterRequest registerRequest = new RegisterRequest();
-        registerRequest.setUsername("testUser");
-        registerRequest.setPassword("testPassword");
-        registerRequest.setEmail("testEmail");
-        registerRequest.setNickname("testNickname");
-        assertTrue(userService.addUser(registerRequest));
-    }
 
     /**
      * 获取所有用户

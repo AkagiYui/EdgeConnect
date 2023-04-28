@@ -45,7 +45,12 @@ public enum ResponseEnum {
     /**
      * 邮箱已被使用
      */
-    EMAIL_EXIST(10008, "Email exist");
+    EMAIL_EXIST(10008, "Email exist"),
+    /**
+     * 验证码未找到
+     */
+    VERIFY_CODE_NOT_FOUND(10009, "Verify code not found");
+
 
     /**
      * 状态码

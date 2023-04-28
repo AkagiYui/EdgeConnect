@@ -1,8 +1,8 @@
 package com.akagiyui.edgeconnect.service;
 
 import com.akagiyui.edgeconnect.entity.User;
-import com.akagiyui.edgeconnect.entity.request.EmailVerifyCodeRequest;
-import com.akagiyui.edgeconnect.entity.request.RegisterRequest;
+import com.akagiyui.edgeconnect.entity.request.EmailVerifyCodeRequireRequest;
+import com.akagiyui.edgeconnect.entity.request.RegisterConfirmRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,13 +19,6 @@ public interface UserService extends IService<User>, UserDetailsService {
      * @return 用户列表
      */
     List<User> getAllUser();
-
-    /**
-     * 添加用户
-     * @param registerRequest 注册请求体
-     * @return 是否成功
-     */
-    Boolean addUser(RegisterRequest registerRequest);
 
     /**
      * 获取用户
@@ -71,22 +64,15 @@ public interface UserService extends IService<User>, UserDetailsService {
 
     /**
      * 注册
-     * @param registerRequest 注册请求体
+     * @param registerConfirmRequest 注册请求体
      * @return 是否成功
      */
-    boolean register(RegisterRequest registerRequest);
+    boolean confirmRegister(RegisterConfirmRequest registerConfirmRequest);
 
     /**
-     * 邮箱是否存在
-     * @param email 邮箱
-     * @return 是否存在
-     */
-    boolean isEmailExist(String email);
-
-    /**
-     * 预注册
+     * 申请邮箱验证码
      * @param verifyRequest 验证请求体
      * @return 是否成功
      */
-    boolean preRegister(EmailVerifyCodeRequest verifyRequest);
+    boolean preRegister(EmailVerifyCodeRequireRequest verifyRequest);
 }
