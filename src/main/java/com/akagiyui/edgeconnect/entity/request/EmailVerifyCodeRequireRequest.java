@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
+ * 邮箱验证码发送请求 请求体
  * @author AkagiYui
  */
 @Data

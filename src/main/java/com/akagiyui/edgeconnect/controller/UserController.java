@@ -1,5 +1,6 @@
 package com.akagiyui.edgeconnect.controller;
 
+import com.akagiyui.edgeconnect.component.limiter.Limit;
 import com.akagiyui.edgeconnect.entity.request.EmailVerifyCodeRequireRequest;
 import com.akagiyui.edgeconnect.entity.request.LoginRequest;
 import com.akagiyui.edgeconnect.entity.request.RegisterConfirmRequest;
@@ -7,6 +8,7 @@ import com.akagiyui.edgeconnect.entity.response.LoginResponse;
 import com.akagiyui.edgeconnect.entity.response.UserInfoResponse;
 import com.akagiyui.edgeconnect.service.LoginService;
 import com.akagiyui.edgeconnect.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
 
     @Resource
@@ -43,16 +46,15 @@ public class UserController {
      * @param registerConfirmRequest 注册请求体
      * @return 是否成功
      */
-    @PreAuthorize("permitAll()")
     @PostMapping("/register")
     public boolean register(@RequestBody @Valid RegisterConfirmRequest registerConfirmRequest) {
         return userService.confirmRegister(registerConfirmRequest);
     }
 
-    @PreAuthorize("permitAll()")
     @PostMapping("/register/code")
+    @Limit(key = "getVerifyCode", permitsPerSecond = 1, timeout = 1)
     public boolean getVerifyCode(@RequestBody @Valid EmailVerifyCodeRequireRequest verifyRequest) {
-        return userService.preRegister(verifyRequest);
+        return userService.sendEmailVerifyCode(verifyRequest);
     }
 
     /**

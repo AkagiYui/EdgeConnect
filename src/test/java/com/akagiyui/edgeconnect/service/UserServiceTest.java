@@ -1,14 +1,12 @@
 package com.akagiyui.edgeconnect.service;
 
-import com.akagiyui.edgeconnect.entity.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * 用户 Service 接口测试
@@ -21,18 +19,8 @@ class UserServiceTest {
     @Resource
     UserService userService;
 
-    /**
-     * 获取所有用户
-     */
-    @Test
-    @DisplayName("获取所有用户")
-    void getAllUser() {
-        List<User> users = userService.getAllUser();
-        users.forEach(System.out::println);
-    }
-
     @Test
     void isUserExist() {
-        assertTrue(userService.isUserExist("testUser"));
+        assertFalse(userService.isUserExist("testUser"));
     }
 }

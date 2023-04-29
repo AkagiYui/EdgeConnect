@@ -10,7 +10,6 @@ import com.akagiyui.edgeconnect.exception.CustomException;
 import com.akagiyui.edgeconnect.mapper.UserMapper;
 import com.akagiyui.edgeconnect.service.MailService;
 import com.akagiyui.edgeconnect.service.UserService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
@@ -43,38 +42,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Resource
     RedisCache redisCache;
 
-    /**
-     * 获取所有用户
-     * @return 用户列表
-     */
-    @Override
-    public List<User> getAllUser() {
-        return userMapper.selectList(null);
-    }
+    @Value("${edge.email.verify.timeout}")
+    private long emailVerifyTimeout;
 
-    /**
-     * 根据用户名获取用户
-     * @param username 用户名
-     * @return 用户
-     */
-    @Override
-    public User getUser(String username) {
-        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(User::getUsername, username);
-        return userMapper.selectOne(wrapper);
-    }
-
-    /**
-     * 根据用户 ID 获取用户
-     * @param userId 用户 ID
-     * @return 用户
-     */
-    @Override
-    public User getUser(Long userId) {
-        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(User::getId, userId);
-        return userMapper.selectOne(wrapper);
-    }
+    @Resource
+    MailService mailService;
 
     /**
      * 获取当前用户
@@ -90,33 +62,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
-     * 用户是否存在
-     * @param username 用户名
-     * @return 是否存在
-     */
-    @Override
-    public Boolean isUserExist(String username) {
-        return getUser(username) != null;
-    }
-
-    /**
-     * 用户是否存在
-     * @param userId 用户 ID
-     * @return 是否存在
-     */
-    @Override
-    public Boolean isUserExist(Long userId) {
-        return getUser(userId) != null;
-    }
-
-    /**
      * 根据用户名获取用户
      * @param username 用户名
      * @return 用户
      */
     @Override
     public UserDetails loadUserByUsername(String username) {
-        User user = getUser(username);
+        User user = userMapper.getUser(username);
         Preconditions.checkNotNull(user, "User not found");
         // TODO 查询用户权限
         List<String> permissions = new ArrayList<>(Arrays.asList("user:test", "user:read"));
@@ -160,14 +112,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
-    @Value("${edge.email.verify.timeout}")
-    private long emailVerifyTimeout;
-
-    @Resource
-    MailService mailService;
-
     @Override
-    public boolean preRegister(EmailVerifyCodeRequireRequest verifyRequest) {
+    public boolean sendEmailVerifyCode(EmailVerifyCodeRequireRequest verifyRequest) {
         // 检查该邮箱是否在 redis 中等待验证
         String redisKey = "emailVerifyCode:" + verifyRequest.getEmail();
         if (redisCache.hasKey(redisKey)) {
@@ -178,7 +124,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new CustomException(EMAIL_EXIST);
         }
         // 检查用户名是否已经注册
-        if (isUserExist(verifyRequest.getUsername())) {
+        if (userMapper.isUserExist(verifyRequest.getUsername())) {
             throw new CustomException(USER_EXIST);
         }
         // 生成验证码
@@ -191,5 +137,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         redisCache.set(registerInfoKey, verifyRequest);
         redisCache.expire(registerInfoKey, emailVerifyTimeout + 1, TimeUnit.MINUTES);
         return true;
+    }
+
+    @Override
+    public boolean isUserExist(String username) {
+        return userMapper.isUserExist(username);
+    }
+
+    @Override
+    public boolean isUserExist(Long userId) {
+        return userMapper.isUserExist(userId);
     }
 }

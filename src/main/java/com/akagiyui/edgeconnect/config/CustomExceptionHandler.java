@@ -2,6 +2,7 @@ package com.akagiyui.edgeconnect.config;
 
 import com.akagiyui.edgeconnect.entity.ResponseResult;
 import com.akagiyui.edgeconnect.exception.CustomException;
+import com.akagiyui.edgeconnect.exception.TooManyRequestsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -62,6 +63,16 @@ public class CustomExceptionHandler {
     public ResponseResult<?> jsonParseException(HttpMessageNotReadableException e) {
         // 目前可预见的是 JSON 解析错误
         return ResponseResult.response(BAD_REQUEST, e.getCause().getMessage());
+    }
+
+    /**
+     * 400 请求过快异常处理
+     * @return 返回相应
+     */
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(value = TooManyRequestsException.class)
+    public ResponseResult<?> tooManyRequestsException(TooManyRequestsException ignored) {
+        return ResponseResult.response(TOO_MANY_REQUESTS);
     }
 
     /**

@@ -49,8 +49,11 @@ public enum ResponseEnum {
     /**
      * 验证码未找到
      */
-    VERIFY_CODE_NOT_FOUND(10009, "Verify code not found");
-
+    VERIFY_CODE_NOT_FOUND(10009, "Verify code not found"),
+    /**
+     * 请求过快
+     */
+    TOO_MANY_REQUESTS(10010, "Too many requests");
 
     /**
      * 状态码
