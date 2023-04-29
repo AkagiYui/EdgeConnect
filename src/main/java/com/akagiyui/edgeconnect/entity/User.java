@@ -30,6 +30,10 @@ public class User extends BaseEntity {
      */
     private String email;
     /**
+     * 是否为管理员
+     */
+    private Boolean isAdmin;
+    /**
      * 是否禁用
      */
     @TableField(fill = FieldFill.INSERT)

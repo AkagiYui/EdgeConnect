@@ -72,6 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             // 放行接口
             .antMatchers(HttpMethod.POST, "/user/login").anonymous()
             .antMatchers(HttpMethod.POST, "/user/register/**").anonymous()
+            .antMatchers(HttpMethod.GET, "/server/ping").anonymous()
             // 其他所有接口必须接受认证
             .anyRequest().fullyAuthenticated();
 
