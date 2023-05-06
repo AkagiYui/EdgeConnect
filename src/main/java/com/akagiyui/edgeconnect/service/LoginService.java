@@ -9,8 +9,8 @@ import com.akagiyui.edgeconnect.entity.request.LoginRequest;
 public interface LoginService {
     /**
      * 登录
-     * @param user 用户信息
+     * @param request 登录请求体
      * @return jwt 字符串
      */
-    String login(LoginRequest user);
+    String login(LoginRequest request);
 }

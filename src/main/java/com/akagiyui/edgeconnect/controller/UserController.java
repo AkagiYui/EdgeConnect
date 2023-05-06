@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 
 /**
- * 用户控制器
+ * 用户 Controller
  * @author AkagiYui
  */
 @RestController
@@ -32,28 +32,33 @@ public class UserController {
     UserService userService;
 
     /**
-     * 登录
+     * 获取JWT（登录）
      * @param user 用户
      * @return 返回token
      */
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody @Valid LoginRequest user) {
+    public LoginResponse getToken(@RequestBody @Valid LoginRequest user) {
         return new LoginResponse(loginService.login(user), null);
     }
 
     /**
-     * 注册
+     * 确认注册
      * @param registerConfirmRequest 注册请求体
      * @return 是否成功
      */
     @PostMapping("/register")
-    public boolean register(@RequestBody @Valid RegisterConfirmRequest registerConfirmRequest) {
+    public boolean confirmRegister(@RequestBody @Valid RegisterConfirmRequest registerConfirmRequest) {
         return userService.confirmRegister(registerConfirmRequest);
     }
 
+    /**
+     * 获取邮件验证码
+     * @param verifyRequest 预注册请求体
+     * @return 是否成功
+     */
     @PostMapping("/register/code")
     @Limit(key = "getVerifyCode", permitsPerSecond = 1, timeout = 1)
-    public boolean getVerifyCode(@RequestBody @Valid EmailVerifyCodeRequireRequest verifyRequest) {
+    public boolean getEmailVerifyCode(@RequestBody @Valid EmailVerifyCodeRequireRequest verifyRequest) {
         return userService.sendEmailVerifyCode(verifyRequest);
     }
 
@@ -67,17 +72,5 @@ public class UserController {
         UserInfoResponse userInfoResponse = new UserInfoResponse();
         BeanUtils.copyProperties(userService.getUser(), userInfoResponse);
         return userInfoResponse;
-    }
-
-    @GetMapping("/test")
-    @PreAuthorize("hasAuthority('user:test')")
-    public String test() {
-        return "test";
-    }
-
-    @GetMapping("/testno")
-    @PreAuthorize("hasAuthority('user:no')")
-    public String test233() {
-        return "testno";
     }
 }

@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 import static com.akagiyui.edgeconnect.component.ResponseEnum.*;
 
 /**
- * 用户表 服务实现类
+ * 用户服务 实现
  * @author AkagiYui
  */
 @Service
@@ -47,10 +47,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Resource
     MailService mailService;
 
-    /**
-     * 获取当前用户
-     * @return 用户
-     */
     @Override
     public User getUser() {
         // 从 SecurityContextHolder 中获取用户信息
@@ -60,11 +56,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userDetails.getUser();
     }
 
-    /**
-     * 根据用户名获取用户
-     * @param username 用户名
-     * @return 用户
-     */
     @Override
     public UserDetails loadUserByUsername(String username) {
         User user = userMapper.getUser(username);
@@ -77,11 +68,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return new LoginUserDetails(user, permissions);
     }
 
-    /**
-     * 注册
-     * @param registerConfirmRequest 注册请求体
-     * @return 是否成功
-     */
     @Override
     public boolean confirmRegister(RegisterConfirmRequest registerConfirmRequest) {
         // 从 redis 取回验证码

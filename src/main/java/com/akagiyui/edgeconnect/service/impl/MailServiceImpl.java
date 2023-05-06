@@ -13,7 +13,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 /**
- * 邮件 Service 实现类
+ * 邮件服务 实现
  * @author AkagiYui
  */
 @Service

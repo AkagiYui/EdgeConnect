@@ -21,9 +21,9 @@ import java.util.Map;
 @Aspect
 @Slf4j
 @Component
-public class LimitAOP {
+public class LimitAspect {
     /**
-     * 不同的接口，不同的流量控制
+     * 限流器字典
      * map的key为 Limit.key
      */
     private final Map<String, RateLimiter> limitMap = Maps.newConcurrentMap();

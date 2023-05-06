@@ -69,7 +69,7 @@ public class CustomExceptionHandler {
      * 400 请求过快异常处理
      * @return 返回相应
      */
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
     @ExceptionHandler(value = TooManyRequestsException.class)
     public ResponseResult<?> tooManyRequestsException(TooManyRequestsException ignored) {
         return ResponseResult.response(TOO_MANY_REQUESTS);

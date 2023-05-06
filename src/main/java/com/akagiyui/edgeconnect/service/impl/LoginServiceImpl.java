@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 import static com.akagiyui.edgeconnect.component.ResponseEnum.UNAUTHORIZED;
 
 /**
- * 登录服务实现类
+ * 登录服务 实现
  * @author AkagiYui
  */
 @Service
@@ -36,11 +36,6 @@ public class LoginServiceImpl implements LoginService {
     @Resource
     private AuthenticationManager authenticationManager;
 
-    /**
-     * 登录
-     * @param request 登录请求体
-     * @return jwt 字符串
-     */
     @Override
     public String login(LoginRequest request) {
         UsernamePasswordAuthenticationToken authenticationToken =
