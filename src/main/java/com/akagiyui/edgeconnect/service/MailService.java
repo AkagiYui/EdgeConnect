@@ -5,7 +5,11 @@ package com.akagiyui.edgeconnect.service;
  * @author AkagiYui
  */
 public interface MailService {
-    void sendMail(String from, String to, String subject, String content);
-
+    /**
+     * 发送邮件验证码
+     * @param email 邮箱
+     * @param verifyCode 验证码
+     * @param timeout 验证码有效时间
+     */
     void sendEmailVerifyCode(String email, String verifyCode, Long timeout);
 }
