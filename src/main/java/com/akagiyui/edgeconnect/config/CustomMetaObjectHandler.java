@@ -1,5 +1,6 @@
 package com.akagiyui.edgeconnect.config;
 
+import com.akagiyui.edgeconnect.entity.Application;
 import com.akagiyui.edgeconnect.entity.User;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
@@ -25,7 +26,7 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
         this.setFieldValByName("updateTime", date, metaObject);
 
         Object originalObject = metaObject.getOriginalObject();
-        if (originalObject instanceof User user) {
+        if (originalObject instanceof User user) { // 用户表
             if (user.getIsDeleted() == null) {
                 // 删除标记
                 this.setFieldValByName("isDeleted", false, metaObject);
@@ -37,6 +38,15 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
             // 如果昵称为空，则使用用户名
             if (user.getNickname() == null) {
                 this.setFieldValByName("nickname", user.getUsername(), metaObject);
+            }
+        } else if (originalObject instanceof Application app) { // 应用表
+            if (app.getIsDeleted() == null) {
+                // 删除标记
+                this.setFieldValByName("isDeleted", false, metaObject);
+            }
+            if (app.getIsDisabled() == null) {
+                // 禁用标记
+                this.setFieldValByName("isDisabled", false, metaObject);
             }
         }
     }

@@ -53,7 +53,16 @@ public enum ResponseEnum {
     /**
      * 请求过快
      */
-    TOO_MANY_REQUESTS(10010, "Too many requests");
+    TOO_MANY_REQUESTS(10010, "Too many requests"),
+    /**
+     * 应用已存在
+     */
+    APPLICATION_EXIST(10011, "Application exist"),
+    /**
+     * 应用不存在
+     */
+    APPLICATION_NOT_FOUND(10012, "Application not found"),
+    ;
 
     /**
      * 状态码

@@ -30,7 +30,7 @@ public class CustomExceptionHandler {
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = NoHandlerFoundException.class)
-    public ResponseResult<?> unknownException(NoHandlerFoundException ignored) {
+    public ResponseResult<?> noRouteException(NoHandlerFoundException ignored) {
         return ResponseResult.response(NOT_FOUND);
     }
 
@@ -40,7 +40,7 @@ public class CustomExceptionHandler {
      */
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(value = InternalAuthenticationServiceException.class)
-    public ResponseResult<?> unknownException(InternalAuthenticationServiceException e) {
+    public ResponseResult<?> authException(InternalAuthenticationServiceException e) {
         return ResponseResult.response(UNAUTHORIZED, e.getMessage());
     }
 
@@ -50,7 +50,7 @@ public class CustomExceptionHandler {
      */
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(value = AccessDeniedException.class)
-    public ResponseResult<?> unknownException(AccessDeniedException e) {
+    public ResponseResult<?> deniedException(AccessDeniedException e) {
         return ResponseResult.response(FORBIDDEN, e.getMessage());
     }
 
@@ -62,7 +62,15 @@ public class CustomExceptionHandler {
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
     public ResponseResult<?> jsonParseException(HttpMessageNotReadableException e) {
         // 目前可预见的是 JSON 解析错误
-        return ResponseResult.response(BAD_REQUEST, e.getCause().getMessage());
+        Throwable cause = e.getCause();
+        if (cause != null) {
+            return ResponseResult.response(BAD_REQUEST, cause.getMessage());
+        }
+        // i无请求体错误
+        if (e.getMessage() != null && e.getMessage().startsWith("Required request body is missing")) {
+            return ResponseResult.response(BAD_REQUEST, "Request body is missing");
+        }
+        return ResponseResult.response(BAD_REQUEST, e.getMessage());
     }
 
     /**
