@@ -17,7 +17,7 @@ public class LoginRequest {
      */
     @NotBlank(message = "Username cannot be empty")
     @NotNull(message = "Username cannot be empty")
-    @Size(min = 5, max = 20, message = "Username length must be between 5 and 20")
+    @Size(min = 3, max = 20, message = "Username length must be between 3 and 20")
     private String username;
     /**
      * 密码
