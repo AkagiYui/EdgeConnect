@@ -1,10 +1,12 @@
 package com.akagiyui.edgeconnect.controller;
 
 import com.akagiyui.edgeconnect.entity.Application;
+import com.akagiyui.edgeconnect.entity.User;
 import com.akagiyui.edgeconnect.entity.request.CreateApplicationRequest;
 import com.akagiyui.edgeconnect.entity.response.ApplicationInfoResponse;
 import com.akagiyui.edgeconnect.exception.CustomException;
 import com.akagiyui.edgeconnect.service.ApplicationService;
+import com.akagiyui.edgeconnect.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,9 @@ public class ApplicationController {
     @Resource
     ApplicationService applicationService;
 
+    @Resource
+    UserService userService;
+
     /**
      * 创建应用
      * @param createApplicationRequest 创建应用请求
@@ -33,7 +38,8 @@ public class ApplicationController {
     @PostMapping("")
     @PreAuthorize("isAuthenticated()")
     public Long createApplication(@RequestBody @Valid CreateApplicationRequest createApplicationRequest) {
-        return applicationService.createApplication(createApplicationRequest);
+        User user = userService.getUser();
+        return applicationService.createApplication(createApplicationRequest, user.getId());
     }
 
     /**
@@ -44,7 +50,8 @@ public class ApplicationController {
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
     public ApplicationInfoResponse getApplicationInfo(@PathVariable Long id) {
-        Application app = applicationService.getById(id);
+        User user = userService.getUser();
+        Application app = applicationService.getApplication(id, user.getId());
         if (app == null) {
             throw new CustomException(APPLICATION_NOT_FOUND);
         }
@@ -53,5 +60,17 @@ public class ApplicationController {
         applicationInfoResponse.setName(app.getName());
         applicationInfoResponse.setCreateTime(app.getCreateTime());
         return applicationInfoResponse;
+    }
+
+    /**
+     * 删除应用
+     * @param id 应用 ID
+     * @return 是否删除成功
+     */
+    @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public Boolean deleteApplication(@PathVariable Long id) {
+        User user = userService.getUser();
+        return applicationService.deleteApplication(id, user.getId());
     }
 }
