@@ -37,6 +37,7 @@ public class UserController {
      * @return 返回token
      */
     @PostMapping("/login")
+    @PreAuthorize("permitAll()")
     public LoginResponse getToken(@RequestBody @Valid LoginRequest user) {
         return new LoginResponse(loginService.login(user), null);
     }
@@ -47,6 +48,7 @@ public class UserController {
      * @return 是否成功
      */
     @PostMapping("/register")
+    @PreAuthorize("permitAll()")
     public boolean confirmRegister(@RequestBody @Valid RegisterConfirmRequest registerConfirmRequest) {
         return userService.confirmRegister(registerConfirmRequest);
     }
@@ -57,6 +59,7 @@ public class UserController {
      * @return 是否成功
      */
     @PostMapping("/register/code")
+    @PreAuthorize("permitAll()")
     @Limit(key = "getVerifyCode", permitsPerSecond = 1, timeout = 1)
     public boolean getEmailVerifyCode(@RequestBody @Valid EmailVerifyCodeRequireRequest verifyRequest) {
         return userService.sendEmailVerifyCode(verifyRequest);

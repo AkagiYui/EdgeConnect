@@ -29,7 +29,7 @@ public class CustomExceptionHandler {
      * @return 返回相应
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(value = NoHandlerFoundException.class)
+    @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseResult<?> noRouteException(NoHandlerFoundException ignored) {
         return ResponseResult.response(NOT_FOUND);
     }
@@ -39,7 +39,7 @@ public class CustomExceptionHandler {
      * @return 返回相应
      */
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(value = InternalAuthenticationServiceException.class)
+    @ExceptionHandler(InternalAuthenticationServiceException.class)
     public ResponseResult<?> authException(InternalAuthenticationServiceException e) {
         return ResponseResult.response(UNAUTHORIZED, e.getMessage());
     }
@@ -49,7 +49,7 @@ public class CustomExceptionHandler {
      * @return 返回相应
      */
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler(value = AccessDeniedException.class)
+    @ExceptionHandler(AccessDeniedException.class)
     public ResponseResult<?> deniedException(AccessDeniedException e) {
         return ResponseResult.response(FORBIDDEN, e.getMessage());
     }
@@ -59,7 +59,7 @@ public class CustomExceptionHandler {
      * @return 返回相应
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(value = HttpMessageNotReadableException.class)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseResult<?> jsonParseException(HttpMessageNotReadableException e) {
         // 目前可预见的是 JSON 解析错误
         Throwable cause = e.getCause();
@@ -78,7 +78,7 @@ public class CustomExceptionHandler {
      * @return 返回相应
      */
     @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
-    @ExceptionHandler(value = TooManyRequestsException.class)
+    @ExceptionHandler(TooManyRequestsException.class)
     public ResponseResult<?> tooManyRequestsException(TooManyRequestsException ignored) {
         return ResponseResult.response(TOO_MANY_REQUESTS);
     }
@@ -88,7 +88,7 @@ public class CustomExceptionHandler {
      * @param e 异常
      * @return 返回相应
      */
-    @ExceptionHandler(value = Exception.class)
+    @ExceptionHandler(Exception.class)
     public ResponseResult<?> unknownException(Exception e) {
         // 自定义异常处理
         if (e instanceof CustomException ce) {
@@ -109,5 +109,4 @@ public class CustomExceptionHandler {
         e.printStackTrace();
         return ResponseResult.response(INTERNAL_ERROR);
     }
-
 }
