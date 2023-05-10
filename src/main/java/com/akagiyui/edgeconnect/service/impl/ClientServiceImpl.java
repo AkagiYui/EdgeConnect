@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.List;
 
 import static com.akagiyui.edgeconnect.component.ResponseEnum.CLIENT_EXIST;
 import static com.akagiyui.edgeconnect.component.ResponseEnum.CLIENT_NOT_FOUND;
@@ -84,5 +85,12 @@ public class ClientServiceImpl extends ServiceImpl<ClientMapper, Client> impleme
         lambdaQueryWrapper.eq(Client::getClientId, id);
         lambdaQueryWrapper.eq(Client::getOwner, userId);
         return clientMapper.selectOne(lambdaQueryWrapper);
+    }
+
+    @Override
+    public List<Client> getClients(Long userId) {
+        LambdaQueryWrapper<Client> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Client::getOwner, userId);
+        return clientMapper.selectList(lambdaQueryWrapper);
     }
 }

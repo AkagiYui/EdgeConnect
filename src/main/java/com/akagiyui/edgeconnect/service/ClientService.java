@@ -5,6 +5,8 @@ import com.akagiyui.edgeconnect.entity.request.CreateClientRequest;
 import com.akagiyui.edgeconnect.entity.response.CreateClientResponse;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * 应用 Service 接口
  * @author AkagiYui
@@ -47,4 +49,11 @@ public interface ClientService extends IService<Client> {
      * @return 应用
      */
     Client getClient(String id, Long userId);
+
+    /**
+     * 获取应用
+     * @param userId 用户 ID
+     * @return 应用
+     */
+    List<Client> getClients(Long userId);
 }
