@@ -1,19 +1,20 @@
 package com.akagiyui.edgeconnect.service;
 
-import com.akagiyui.edgeconnect.entity.Application;
-import com.akagiyui.edgeconnect.entity.request.CreateApplicationRequest;
+import com.akagiyui.edgeconnect.entity.Client;
+import com.akagiyui.edgeconnect.entity.request.CreateClientRequest;
+import com.akagiyui.edgeconnect.entity.response.CreateClientResponse;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * 应用 Service 接口
  * @author AkagiYui
  */
-public interface ApplicationService extends IService<Application> {
+public interface ClientService extends IService<Client> {
     /**
      * 创建应用
      * @return 是否成功
      */
-    Long createApplication(CreateApplicationRequest createApplicationRequest, Long userId);
+    CreateClientResponse createClient(CreateClientRequest createClientRequest, Long userId);
 
     /**
      * 判断应用是否存在
@@ -21,22 +22,23 @@ public interface ApplicationService extends IService<Application> {
      * @param userId 用户 ID
      * @return 是否存在
      */
-    Boolean isApplicationExist(String name, Long userId);
+    Boolean isClientExistByName(String name, Long userId);
 
     /**
      * 判断应用是否存在
-     * @param appId 应用 ID
-     * @param userId 用户 ID
+     *
+     * @param clientId 应用 ID
+     * @param userId   用户 ID
      * @return 是否存在
      */
-    Boolean isApplicationExist(Long appId, Long userId);
+    Boolean isClientExistByClientId(String clientId, Long userId);
 
     /**
      * 删除应用
      * @param id 应用 ID
      * @return 是否成功
      */
-    Boolean deleteApplication(Long id, Long userId);
+    Boolean deleteClient(String id, Long userId);
 
     /**
      * 获取应用
@@ -44,5 +46,5 @@ public interface ApplicationService extends IService<Application> {
      * @param userId 用户 ID
      * @return 应用
      */
-    Application getApplication(Long id, Long userId);
+    Client getClient(String id, Long userId);
 }

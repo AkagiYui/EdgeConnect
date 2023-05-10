@@ -9,11 +9,11 @@ import java.util.Date;
  * @author AkagiYui
  */
 @Data
-public class ApplicationInfoResponse {
+public class ClientInfoResponse {
     /**
      * 应用 ID
      */
-    private Long id;
+    private String clientId;
     /**
      * 应用名称
      */

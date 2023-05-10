@@ -9,7 +9,7 @@ import lombok.Data;
  * @author AkagiYui
  */
 @Data
-public class Application extends BaseEntity {
+public class Client extends BaseEntity {
     /**
      * 应用名称
      */
@@ -18,6 +18,14 @@ public class Application extends BaseEntity {
      * 所有者
      */
     private Long owner;
+    /**
+     * 应用id
+     */
+    private String clientId;
+    /**
+     * 应用密钥
+     */
+    private String clientSecret;
     /**
      * 是否禁用
      */

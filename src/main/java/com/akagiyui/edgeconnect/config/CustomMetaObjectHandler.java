@@ -1,6 +1,6 @@
 package com.akagiyui.edgeconnect.config;
 
-import com.akagiyui.edgeconnect.entity.Application;
+import com.akagiyui.edgeconnect.entity.Client;
 import com.akagiyui.edgeconnect.entity.User;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
@@ -39,7 +39,7 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
             if (user.getNickname() == null) {
                 this.setFieldValByName("nickname", user.getUsername(), metaObject);
             }
-        } else if (originalObject instanceof Application app) { // 应用表
+        } else if (originalObject instanceof Client app) { // 应用表
             if (app.getIsDeleted() == null) {
                 // 删除标记
                 this.setFieldValByName("isDeleted", false, metaObject);

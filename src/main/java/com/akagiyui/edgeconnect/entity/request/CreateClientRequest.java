@@ -10,11 +10,11 @@ import javax.validation.constraints.Size;
  * @author AkagiYui
  */
 @Data
-public class CreateApplicationRequest {
+public class CreateClientRequest {
     /**
      * 应用名称
      */
-    @NotNull(message = "Application name cannot be empty")
-    @Size(min = 1, max = 20, message = "Application name length must be between 1 and 20")
+    @NotNull(message = "Client name cannot be empty")
+    @Size(min = 1, max = 20, message = "Client name length must be between 1 and 20")
     private String name;
 }

@@ -57,11 +57,11 @@ public enum ResponseEnum {
     /**
      * 应用已存在
      */
-    APPLICATION_EXIST(10011, "Application exist"),
+    CLIENT_EXIST(10011, "Client exist"),
     /**
      * 应用不存在
      */
-    APPLICATION_NOT_FOUND(10012, "Application not found"),
+    CLIENT_NOT_FOUND(10012, "Client not found"),
     ;
 
     /**
